@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Authentication</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(120deg, #38ef7d, #11998e);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 0.7rem;
+      background: #11998e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #securePage {
+      display: none;
+    }
+    .hidden {
+      display: none;
+    }
+    h2 {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="authContainer">
+  <h2 id="formTitle">Login</h2>
+  <input type="text" id="username" placeholder="Username" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <button onclick="login()">Login</button>
+  <p>Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
+</div>
+
+<div class="container hidden" id="registerContainer">
+  <h2>Register</h2>
+  <input type="text" id="newUsername" placeholder="New Username" required />
+  <input type="password" id="newPassword" placeholder="New Password" required />
+  <button onclick="register()">Register</button>
+  <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+</div>
+
+<div class="container hidden" id="securePage">
+  <h2>Welcome to the Secure Page!</h2>
+  <p>You are successfully logged in.</p>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+  function showRegister() {
+    document.getElementById('authContainer').classList.add('hidden');
+    document.getElementById('registerContainer').classList.remove('hidden');
+  }
+
+  function showLogin() {
+    document.getElementById('registerContainer').classList.add('hidden');
+    document.getElementById('authContainer').classList.remove('hidden');
+  }
+
+  function register() {
+    const user = document.getElementById('newUsername').value;
+    const pass = document.getElementById('newPassword').value;
+
+    if (user && pass) {
+      localStorage.setItem('username', user);
+      localStorage.setItem('password', pass);
+      alert("Registered successfully! Now login.");
+      showLogin();
+    } else {
+      alert("Please enter a username and password.");
+    }
+  }
+
+  function login() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+
+    const storedUser = localStorage.getItem('username');
+    const storedPass = localStorage.getItem('password');
+
+    if (user === storedUser && pass === storedPass) {
+      document.getElementById('authContainer').classList.add('hidden');
+      document.getElementById('securePage').classList.remove('hidden');
+    } else {
+      alert("Invalid credentials!");
+    }
+  }
+
+  function logout() {
+    document.getElementById('securePage').classList.add('hidden');
+    document.getElementById('authContainer').classList.remove('hidden');
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+  }
+</script>
+
+</body>
+</html>
